@@ -84,7 +84,7 @@ const Clients: React.FC = () => {
   const handleDelete = async (client: Client) => {
     if (window.confirm(`Tem certeza que deseja excluir o cliente "${client.name}"?`)) {
       try {
-        await clientService.deleteClient(client.id);
+        await clientService.remove(client.id);
         await fetchClients();
       } catch (error) {
         console.error('Erro ao excluir cliente:', error);

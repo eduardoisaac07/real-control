@@ -9,15 +9,16 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) {
+  if (token == null) {
     return res.sendStatus(401); // Unauthorized
   }
 
   jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
     if (err) {
+      console.error('Erro de verificação de token:', err);
       return res.sendStatus(403); // Forbidden
     }
-    req.userId = (user as { id: string }).id;
+    req.userId = (user as { userId: string }).userId;
     next();
   });
 };

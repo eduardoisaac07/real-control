@@ -8,6 +8,7 @@ export const createClient = async (req: AuthRequest, res: Response): Promise<voi
   try {
     const { name, email, phone } = req.body;
     const userId = req.userId;
+    console.log('Recebido userId:', userId); // Adicione esta linha
 
     // Validar dados de entrada
     if (!name) {
@@ -43,6 +44,10 @@ export const createClient = async (req: AuthRequest, res: Response): Promise<voi
     });
   } catch (error) {
     console.error('Erro ao criar cliente:', error);
+    if (error instanceof Error) {
+      console.error('Detalhes do erro:', error.message);
+      console.error('Stack trace:', error.stack);
+    }
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 };
@@ -156,6 +161,7 @@ export const deleteClient = async (req: AuthRequest, res: Response): Promise<voi
 
     if (!existingClient) {
       res.status(404).json({ error: 'Cliente não encontrado' });
+    return;
     }
 
     // Deletar cliente (cascata deletará pedidos e orçamentos relacionados)
@@ -166,6 +172,10 @@ export const deleteClient = async (req: AuthRequest, res: Response): Promise<voi
     res.json({ message: 'Cliente deletado com sucesso' });
   } catch (error) {
     console.error('Erro ao deletar cliente:', error);
+    if (error instanceof Error) {
+      console.error('Detalhes do erro:', error.message);
+      console.error('Stack trace:', error.stack);
+    }
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 };
